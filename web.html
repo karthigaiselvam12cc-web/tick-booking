@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Ticket Booking</title>
+
+<style>
+    body {
+        font-family: Arial;
+        margin: 0;
+        background: #111;
+        color: white;
+    }
+
+    header {
+        background: #e50914;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    select, button {
+        padding: 10px;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .screen {
+        background: #ccc;
+        height: 50px;
+        margin: 20px 0;
+        text-align: center;
+        line-height: 50px;
+        color: black;
+        font-weight: bold;
+    }
+
+    .seat {
+        width: 35px;
+        height: 35px;
+        background: green;
+        margin: 5px;
+        display: inline-block;
+        text-align: center;
+        line-height: 35px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .seat.selected {
+        background: orange;
+    }
+
+    .seat.booked {
+        background: red;
+        cursor: not-allowed;
+    }
+
+    button {
+        background: #e50914;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #b00610;
+    }
+
+    .output {
+        background: #222;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎬 Movie Ticket Booking</h1>
+</header>
+
+<div class="container">
+
+    <h2>Select Movie</h2>
+    <select id="movie">
+        <option>Leo</option>
+        <option>Jailer</option>
+        <option>Avengers</option>
+        <option>Spider-Man</option>
+    </select>
+
+    <h2>Select Show Time</h2>
+    <select id="time">
+        <option>10:00 AM</option>
+        <option>1:00 PM</option>
+        <option>6:00 PM</option>
+        <option>9:00 PM</option>
+    </select>
+
+    <div class="screen">SCREEN</div>
+
+    <h2>Select Seats</h2>
+    <div id="seats"></div>
+
+    <button onclick="bookTickets()">Book Now</button>
+
+    <div class="output" id="output"></div>
+
+</div>
+
+<script>
+    const seatsContainer = document.getElementById("seats");
+
+    // Create 40 seats
+    for (let i = 1; i <= 40; i++) {
+        let seat = document.createElement("div");
+        seat.classList.add("seat");
+        seat.innerText = i;
+
+        seat.addEventListener("click", () => {
+            if (!seat.classList.contains("booked")) {
+                seat.classList.toggle("selected");
+            }
+        });
+
+        seatsContainer.appendChild(seat);
+    }
+
+    function bookTickets() {
+        const selectedSeats = document.querySelectorAll(".seat.selected");
+        const movie = document.getElementById("movie").value;
+        const time = document.getElementById("time").value;
+
+        if (selectedSeats.length === 0) {
+            alert("Please select seats!");
+            return;
+        }
+
+        let seatNumbers = [];
+
+        selectedSeats.forEach(seat => {
+            seat.classList.remove("selected");
+            seat.classList.add("booked");
+            seatNumbers.push(seat.innerText);
+        });
+
+        document.getElementById("output").innerHTML =
+            `<h3>Booking Confirmed 🎉</h3>
+             <p><b>Movie:</b> ${movie}</p>
+             <p><b>Time:</b> ${time}</p>
+             <p><b>Seats:</b> ${seatNumbers.join(", ")}</p>`;
+    }
+</script>
+
+</body>
+</html>
